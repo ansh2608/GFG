@@ -1,0 +1,34 @@
+public class SmithNumber {
+    static int smithNum(int n) {
+        if(n==1) return 0;
+        int m =n;
+        int sum1=0;
+        int sum2=0;
+        int i=2;
+        while(i<=n/2) {
+            if(m%i==0) {
+                if(i<10) sum1+=i;
+                else {
+                    int j=i;
+                    while(j>0) {
+                        sum1+=(j%10);
+                        j=j/10;
+                    }
+                }
+                m=m/i;
+            }
+            else i++;
+        }
+        while(n>0) {
+            sum2=sum2+(n%10);
+            n=n/10;
+        }
+        if(sum1==0) return 0;
+        if(sum1==sum2) return 1;
+        return 0;
+    }
+    public static void main(String[] args) {
+        int n=4;
+        System.out.println(smithNum(n));
+    }
+}
