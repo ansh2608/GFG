@@ -1,56 +1,43 @@
-import java.util.*;
-
-class Pair{
-    int first;
-    int second;
-    public Pair(int first,int second){
-        this.first=first;
-        this.second=second;
-    }
-}
 public class Main {
-    private static void bfs(int nrow, int ncol, char [][]grid, int [][]visit){
+    int[][] dirs = new int[][]{{0,-1},{-1, 0},{0,1},{1,0},{-1,-1},{-1,1},{1,1},{1,-1}};
 
-        int n = grid.length;
-        int m = grid[0].length;
-        Queue<Pair> q = new LinkedList<>();
-        q.add(new Pair(nrow, ncol));
-        visit[nrow][ncol]=1;
+    public int numIslands(char[][] grid) {
+        // Code here
+        int noOfIslands = 0;
+        int rows = grid.length;
+        int cols = grid[0].length;
+        boolean[][] visited = new boolean[rows][cols];
 
-        while(!q.isEmpty()){
-            Pair pair = q.remove();
-            int i = pair.first;
-            int j = pair.second;
-
-            for(int k=-1; k<=1; k++){
-                for(int l=-1; l<=1; l++){
-                    int row = k+i;
-                    int col = l+j;
-
-                    if(row>=0 && row<n && col>=0 && col<m && visit[row][col]==0 && grid[row][col]=='1'){
-                        q.add(new Pair(row, col));
-                        visit[row][col]=1;
-                    }
+        for(int i=0; i<rows; i++){
+            for(int j=0; j<cols; j++){
+                if(grid[i][j] != '0' && !visited[i][j]){
+                    dfs(grid, visited, i, j);
+                    noOfIslands++;
                 }
             }
         }
+
+        return noOfIslands;
     }
 
-    public static int numIslands(char[][] grid) {
-        int n = grid.length,m = grid[0].length,cnt = 0;
-        int [][]visit = new int[n][m];
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(grid[i][j] == '1' && visit[i][j] == 0){
-                    bfs(i, j, grid, visit);
-                    cnt++;
-                }
+    private void dfs(char[][] grid, boolean[][] visited, int i, int j){
+        if(grid[i][j] == '0'){
+            return;
+        }
+
+        visited[i][j] = true;
+
+        for(int[] dir : dirs){
+            int r = i+dir[0];
+            int c = j+dir[1];
+
+            if(r >= 0 && r < grid.length && c >= 0 && c < grid[0].length &&
+                    grid[r][c] == '1' && !visited[r][c]){
+                dfs(grid, visited, r, c);
             }
         }
-        return cnt;
     }
     public static void main(String[] args) {
-        char[][] grid = {{4,2},{0,1},{1,0},{1,1},{1,0}};
-        System.out.println(numIslands(grid));
+        System.out.println("Hello world!");
     }
 }
